@@ -4,21 +4,43 @@ import logo from './images/logo.gif'
 import { Form, Input, Button, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api/index'
+import memoryUtils from '../../utils/memoryUitls'
+import storageUtils from '../../utils/storageUtils'
+import { Redirect } from 'react-router-dom';
 /*登陆路由组件 */
 export class login extends Component {
-    onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    onFinish = async values => {
+        //console.log('Received values of form: ', values); 请求登录
         const {username, password} = values;
+        const response = await reqLogin(username, password)
+        const result =  response.data //{status: 0, data: user} {status: 1, msg: 'xxx'}
+        if(result.status === 0){  //200
+            message.success('登陆成功')
+            const user = result.data
+            memoryUtils.user = user   //保存在内存中
+            storageUtils.saveUser(user) //保存在local中
+            //不回退跳转
+            this.props.history.replace('/')
+        }
+        else{
+            message.error(result.msg)
+        }
+        /*
         reqLogin(username, password)
             .then(res => console.log(res.data))
             .catch(err => console.log(err))
+        */
       };
 
     onFinishFailed = errorInfo => {
-        message.error('Failed',errorInfo);
+        message.error('Failed'+ "用户名或密码不符合要求");
       };
     
     render() {
+        const user = memoryUtils.user
+        if(user && user._id){
+            return <Redirect to='/'/>
+        }
         return (
             <div className="login">
                 <header className="login-header">
@@ -80,6 +102,8 @@ export class login extends Component {
             </div>
         )
     }
+
+
 }
 
 export default login

@@ -5,6 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 //import 'antd/dist/antd.css' 
 
+//读取local中保存user, 保存到内存中
+import storageUtils from './utils/storageUtils'
+import memoryUitls from './utils/memoryUitls'
+const user = storageUtils.getUser()
+memoryUitls.user = user
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
