@@ -7,6 +7,7 @@ import {reqLogin} from '../../api/index'
 import memoryUtils from '../../utils/memoryUitls'
 import storageUtils from '../../utils/storageUtils'
 import { Redirect } from 'react-router-dom';
+import { useForm } from 'antd/lib/form/Form';
 /*登陆路由组件 */
 export class login extends Component {
     // onFinish = (values) => {
@@ -32,12 +33,25 @@ export class login extends Component {
     //     }
     //   });
 
-     onFinish = (async (values) => {
+     onFinish = ( async (values) => {
         console.log('Received values of form: ', values);
-        const {username, password} = values;
+        const {username, password} = values
         const response = await reqLogin(username, password)
-        console.log('请求成功', response.data)
-      });
+        // console.log('请求成功', response)
+        const result = response.data
+        // console.log('Received values of form: ', result.data)
+        if(result.code == 200){
+            message.success('登陆成功')
+            //保存user
+            const user = result.data
+            memoryUtils.user = user
+            storageUtils.saveUser(user)
+            console.log(memoryUtils.user)
+            //跳转不回退
+            return this.props.history.replace('/')
+        }else{
+            return message.error(result.message)
+        }});
 
     onFinishFailed = errorInfo => {
         message.error('检验失败',errorInfo);

@@ -8,6 +8,8 @@ import * as serviceWorker from './serviceWorker';
 //读取local中保存user, 保存到内存中
 import storageUtils from './utils/storageUtils'
 import memoryUitls from './utils/memoryUitls'
+
+//读取local中保存的user
 const user = storageUtils.getUser()
 memoryUitls.user = user
 
