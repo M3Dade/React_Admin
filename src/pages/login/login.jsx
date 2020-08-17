@@ -1,21 +1,43 @@
 import React, { Component } from 'react'
-import moduleName from './login.less'
+import './login.less'
 import logo from './images/logo.gif'
 import { Form, Input, Button, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api/index'
 /*登陆路由组件 */
 export class login extends Component {
-    onFinish = (values) => {
+    // onFinish = (values) => {
+    //     console.log('Received values of form: ', values);
+    //     const {username, password} = values;
+    //     reqLogin(username, password)
+    //         .then(res => console.log(res.data))
+    //         .catch(err => console.log(err))
+    //   };
+
+    //async await 简化promise使用
+    //消灭回调函数
+    //同步编码实现异步流程
+    //不要promise对象 要其执行成功的value数据
+    // onFinish = (async (values) => {
+    //     console.log('Received values of form: ', values);
+    //     const {username, password} = values;
+    //     try{
+    //         const response = await reqLogin(username, password)
+    //         console.log('请求成功', response.data)
+    //     }catch(error){
+    //         console.log('请求出错了', error)
+    //     }
+    //   });
+
+     onFinish = (async (values) => {
         console.log('Received values of form: ', values);
         const {username, password} = values;
-        reqLogin(username, password)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err))
-      };
+        const response = await reqLogin(username, password)
+        console.log('请求成功', response.data)
+      });
 
     onFinishFailed = errorInfo => {
-        message.error('Failed',errorInfo);
+        message.error('检验失败',errorInfo);
       };
     
     render() {
