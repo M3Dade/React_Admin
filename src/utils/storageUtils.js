@@ -11,7 +11,7 @@ export default{
     },
     /*读取user */
     getUser(){
-        return store,get(USER_KEY) || {}
+        return store.get(USER_KEY) || {}    //没有值 返回空对象
         //return JSON.parse(localStorage.getItem(USER_KEY) || '{}')
     },
     /*删除user */
