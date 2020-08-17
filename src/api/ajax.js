@@ -27,7 +27,5 @@ export default function ajax(url, data={}, type='get'){ //data可能没有参数
             message.error('请求出错了：' + error.message)
         })
         
-    })
-
-    
+    })    
 }

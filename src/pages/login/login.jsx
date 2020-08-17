@@ -4,6 +4,9 @@ import logo from './images/logo.gif'
 import { Form, Input, Button, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api/index'
+import memoryUtils from '../../utils/memoryUitls'
+import storageUtils from '../../utils/storageUtils'
+import { Redirect } from 'react-router-dom';
 /*登陆路由组件 */
 export class login extends Component {
     // onFinish = (values) => {
@@ -41,6 +44,10 @@ export class login extends Component {
       };
     
     render() {
+        const user = memoryUtils.user
+        if(user && user._id){
+            return <Redirect to='/'/>
+        }
         return (
             <div className="login">
                 <header className="login-header">
@@ -102,6 +109,8 @@ export class login extends Component {
             </div>
         )
     }
+
+
 }
 
 export default login
