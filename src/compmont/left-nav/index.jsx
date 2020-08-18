@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import logo from '../../assets/images/logo.png'
 import moduleName from '../left-nav/index.less'
 import {Link, withRouter} from 'react-router-dom'
-import { Menu, Button } from 'antd';
+import { Menu, Button , Icon} from 'antd';
 import {
     AppstoreOutlined,
     MenuUnfoldOutlined,
@@ -24,13 +24,13 @@ class LeftNav extends Component {
     getMenuNodes_map = (menuList)=>{
         return menuList.map(item=>{
             if(!item.children){
-                return(<Menu.Item key={item.key} >
+                return(<Menu.Item key={item.key} icon={item.icon} >
                     <Link to={item.key}>
                      <span>{item.title}</span>
                     </Link>
                 </Menu.Item>)
             }else{
-                return(<SubMenu key={item.key} title={item.title}>
+                return(<SubMenu key={item.key} title={item.title} icon={item.icon}>
                     {this.getMenuNodes(item.children)}
                 </SubMenu>)
             }
@@ -38,15 +38,22 @@ class LeftNav extends Component {
     }
     
     getMenuNodes = (menuList)=>{
+      const path = this.props.location.pathname
         return menuList.reduce( (pre, item)  => {
             if(!item.children){
-                pre.push((<Menu.Item key={item.key} >
+            pre.push((<Menu.Item key={item.key} icon={item.icon} >
                     <Link to={item.key}>
                      <span>{item.title}</span>
                     </Link>
                 </Menu.Item>))
             }else{
-                pre.push((<SubMenu key={item.key} title={item.title}>
+                //找与当前路径匹配的子Item
+                const cItem = item.children.find(cItem=> cItem.key === path)
+                //有？ 展开父Item
+                if(cItem)
+                  this.openkey = item.key
+
+                pre.push((<SubMenu key={item.key}  icon={item.icon} title={item.title}>
                     {this.getMenuNodes(item.children)}
                 </SubMenu>))
             }
@@ -58,15 +65,23 @@ class LeftNav extends Component {
         collapsed: false,
       };
     
-      toggleCollapsed = () => {
-        this.setState({
-          collapsed: !this.state.collapsed,
-        });
-      };
+    toggleCollapsed = () => {
+      this.setState({
+        collapsed: !this.state.collapsed,
+      });
+    };
+    //第一次render之前执行一次 
+    //为第一个render准备数据
+    componentWillMount(){
+      this.menuNodes = this.getMenuNodes(menuList)
+    }
 
     render() {
+      debugger
+      //得到当前请求的路由路径
       const path = this.props.location.pathname
-
+      //得到需要打开菜单项的key
+      const openkey = this.openkey
         return (
             <div style={{ width: 200 }}>
             <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }}>
@@ -80,14 +95,14 @@ class LeftNav extends Component {
             </Link>
             
             <Menu
-              defaultSelectedKeys={['1']}
-              // selectedKeys={[path]}
-              defaultOpenKeys={['sub1']}
+              // defaultSelectedKeys={['1']}
+              selectedKeys={[path]}
+              defaultOpenKeys={[openkey]}
               mode="inline"
               theme="dark"
               inlineCollapsed={this.state.collapsed}
             >
-              {this.getMenuNodes(menuList)}
+              {this.menuNodes}
               {/* <Menu.Item key="1" icon={<PieChartOutlined />}>
                   <Link to='/home'>
                     <span>首页</span>
@@ -95,7 +110,7 @@ class LeftNav extends Component {
               </Menu.Item>
               <Menu.Item key="2" icon={<DesktopOutlined />}>
                   <Link to='/user'>
-                     <span>上传图片</span>
+                    <span>上传图片</span>
                   </Link>
               </Menu.Item>
               <Menu.Item key="3" icon={<ContainerOutlined />}>
