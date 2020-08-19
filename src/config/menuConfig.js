@@ -8,6 +8,7 @@ import {
   ContainerOutlined,
   MailOutlined,
   HomeOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 //https://ant.design/components/icon-cn/
 const menuList = [
@@ -16,6 +17,11 @@ const menuList = [
       key: '/home', // 对应的path
       icon: <HomeOutlined />, // 图标名称
       isPublic: true, // 公开的
+    },
+    {
+      title: '血液检测', // 菜单标题名称
+      key: '/blood', // 对应的path
+      icon: <FileAddOutlined />, // 图标名称
     },
     {
       title: '商品',

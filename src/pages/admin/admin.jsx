@@ -6,6 +6,7 @@ import memoryUtils from '../../utils/memoryUitls'
 import LeftNav from '../../compmont/left-nav'
 import Header from '../../compmont/header'
 import Home from '../home/home'
+import Blood from '../blood/blood'
 import Category from '../category/category'
 import Product from '../product/product'
 import Role from '../role/role'
@@ -36,6 +37,7 @@ export class Admin extends Component {
                     <Content style={{margin:20, backgroundColor:'#fff'}}>
                         <Switch>
                             <Route path='/home' component={Home}/>
+                            <Route path='/blood' component={Blood}/>
                             <Route path='/category' component={Category}/>
                             <Route path='/product' component={Product}/>
                             <Route path='/role' component={Role}/>
