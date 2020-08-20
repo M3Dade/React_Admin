@@ -34,3 +34,6 @@ export const reqWeather = (cityId) =>{
     
 }
 reqWeather('330104');
+
+//获取商品分页列表
+export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {pageNum, pageSize})
