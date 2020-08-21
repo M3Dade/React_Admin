@@ -34,3 +34,5 @@ export const reqWeather = (cityId) =>{
     
 }
 reqWeather('330104');
+
+export const reqDeleteImg = (name) => ajax(BASE+'/image/delete', {name}, 'POST')

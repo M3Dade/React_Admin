@@ -24,17 +24,17 @@ const menuList = [
       icon: <FileAddOutlined />, // 图标名称
     },
     {
-      title: '商品',
+      title: '待命名',// '商品',
       key: '/products',
       icon: '',
       children: [ // 子菜单列表
         {
-          title: '品类管理',
+          title: '待命名',//'品类管理',
           key: '/category',
           icon: ''
         },
         {
-          title: '商品管理',
+          title: '待命名',//'商品管理',
           key: '/product',
           icon: ''
         },
