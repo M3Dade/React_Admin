@@ -20,6 +20,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
+    "react-zmage": "^0.8.5-beta.36",
     "store": "^2.0.12"
   },
   "scripts": {

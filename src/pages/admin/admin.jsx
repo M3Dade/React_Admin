@@ -14,6 +14,7 @@ import User from '../user/user'
 import Bar from '../charts/bar'
 import Line from '../charts/line'
 import Pie from '../charts/pie'
+import Predict from '../blood/predict'
 
 
 const {Footer, Sider, Content} = Layout
@@ -38,6 +39,7 @@ export class Admin extends Component {
                         <Switch>
                             <Route path='/home' component={Home}/>
                             <Route path='/blood' component={Blood}/>
+                            <Route path='/prediction' component={Predict}/>
                             <Route path='/category' component={Category}/>
                             <Route path='/product' component={Product}/>
                             <Route path='/role' component={Role}/>

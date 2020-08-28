@@ -7,6 +7,7 @@ import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import LinkButton from '../link-button'
 import './index.less'
+import Clock from './clock'
 
 const { confirm } = Modal;
 
@@ -66,9 +67,9 @@ class Header extends Component {
                <div className="header-bottem">
                    <div className="header-bottom-left"><span>{title}</span></div>
                    <div className="header-bottom-right">
-                       <span>2020-8-18</span>
-                        <img src="" alt="weather"/>
-                        <span></span>
+                       {/* <span>2020-8-18</span>
+                        <img src="" alt="weather"/> */}
+                        <Clock />
                     </div>
                </div>
            </div>

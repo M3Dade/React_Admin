@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {reqDeleteImg} from '../../api/index'
+import PropTypes from 'prop-types'
+import {BASE_IMG_URL} from '../../utils/constants'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -12,7 +14,13 @@ function getBase64(file) {
   });
 }
 
+
 export default class PicturesWall extends React.Component {
+
+  static propTypes = {
+    imgs:PropTypes.array
+  }
+
   state = {
     previewVisible: false,    //是否大图预览Modal
     previewImage: '',   //大图的url
@@ -23,16 +31,34 @@ export default class PicturesWall extends React.Component {
       //   name: 'image.png',  //图片文件名
       //   status: 'done',   //图片状态
       //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      // },
-      // {
-      //   uid: '-2',
-      //   name: 'image.png',
-      //   status: 'done',
-      //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      // },
+      // }
       
     ],
   };
+
+  constructor (props){
+    super(props)
+    let fileList = []
+    //如果传入了imgs属性
+    const{imgs} = this.props
+    if(imgs && imgs.length>0){
+      fileList = imgs.map((img, index)=>({
+        uid:-index,
+        name:img,
+        status:'done',
+        url:BASE_IMG_URL + img
+      }))
+    }
+
+    //初始化
+    this.state = {
+      previewVisible: false,    //是否大图预览Modal
+      previewImage: '',   //大图的url
+      previewTitle: '',   //图片名
+      fileList
+    }
+  }
+
   //隐藏modal
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -75,7 +101,6 @@ export default class PicturesWall extends React.Component {
         message.error('删除图片失败')
       }
     }
-
     //在操作（上传/删除过程中更新filelist状态）
     this.setState({ fileList })
   };
