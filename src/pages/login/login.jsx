@@ -66,7 +66,7 @@ export class login extends Component {
             <div className="login">
                 <header className="login-header">
                     <img src={logo} alt="logo"></img>
-                    <h1>React后台管理系统</h1>
+                    <h1>白细胞检测系统</h1>
                 </header>
                 <section className="login-content">
                     <h2>用户登录</h2>
