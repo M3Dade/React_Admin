@@ -13,8 +13,9 @@ import axios from 'axios'
 import { message } from 'antd'
 
 export default function ajax(url, data={}, type='GET'){ //data可能没有参数 给默认值 空对象
-
+    
     return new Promise((resolve, reject) =>{
+        debugger
         let promise
         //1.执行ajax
         if(type === 'GET')

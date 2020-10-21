@@ -54,7 +54,7 @@ export const reqWeather = (cityId) => {
                 resolve(date, week, text_day)
         } else {
           // 如果失败了
-          message.error('获取天气信息失败!')
+          //message.error('获取天气信息失败!')
         }
   
       })
