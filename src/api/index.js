@@ -2,7 +2,11 @@
 包含应用中所有接口请求函数的模块
 每个接口对应每个函数
 每个函数返回值都是Promise
+
+基本要求：根据接口文档定义请求函数
+
 */
+
 import ajax from './ajax'
 import jsonp from 'jsonp'
 import { message } from 'antd'
@@ -37,3 +41,12 @@ reqWeather('330104');
 
 //获取商品分页列表
 export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {pageNum, pageSize})
+
+//获取一级/二级分类的列表
+export const reqCategorys = (parentId) => ajax(BASE + '/category/list', {parentId})
+
+//添加分类
+export const reqAddCategorys = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'POST')
+
+//更新分类
+export const reqUpdateCategorys = ({categoryId, categoryName}) => ajax(BASE + '/manage/category/update', {categoryId, categoryName}, 'POST')

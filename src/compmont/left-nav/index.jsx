@@ -77,7 +77,7 @@ class LeftNav extends Component {
     }
 
     render() {
-      debugger
+      // debugger
       //得到当前请求的路由路径
       const path = this.props.location.pathname
       //得到需要打开菜单项的key
