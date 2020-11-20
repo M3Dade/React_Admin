@@ -8,7 +8,7 @@ export default function NotFound() {
     return (
         <div>
             <Row className='not-found'>
-                
+                <Col span={12} className='left'></Col>
             </Row>
         </div>
     )
