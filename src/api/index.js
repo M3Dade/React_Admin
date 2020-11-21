@@ -49,4 +49,4 @@ export const reqCategorys = (parentId) => ajax(BASE + '/category/list', {parentI
 export const reqAddCategorys = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'POST')
 
 //更新分类
-export const reqUpdateCategorys = ({categoryId, categoryName}) => ajax(BASE + '/manage/category/update', {categoryId, categoryName}, 'POST')
+export const reqUpdateCategorys = ({categoryId, categoryName}) => ajax(BASE + '/category/update', {categoryId, categoryName}, 'POST')

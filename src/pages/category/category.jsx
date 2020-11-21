@@ -9,7 +9,7 @@ import{
 
 import {PlusOutlined,DoubleRightOutlined} from '@ant-design/icons';
 import LinkButton from '../../compmont/link-button'
-import {reqCategorys} from '../../api'
+import {reqCategorys, reqUpdateCategorys, reqAddCategorys} from '../../api'
 import AddForm from './AddForm'
 import UpdateForm from './UpdateForm'
 import './category.less'
@@ -40,7 +40,7 @@ export default class Category extends Component {
                 width:300,
                 render: (category) => (     //返回需要显示的界面标签
                     <span>
-                        <LinkButton onClick={() =>this.showUpdateModal}>修改分类</LinkButton>
+                        <LinkButton onClick={() =>this.showUpdateModal(category)}>修改分类</LinkButton>
                         {/*如何向事件回调函数传递参数：先定义一个匿名函数，在函数调用处理的函数并传入数据 */}
                         {this.state.parentId=== 0 ? <LinkButton onClick={() => this.showSubCategorys(category)}>查看子分类</LinkButton> : null} {/*点击的时候才调用*/}
                         {/* <LinkButton onClink={this.showSubCategorys(category)}>查看子分类</LinkButton> //渲染的时候就被调用了 */}
@@ -52,11 +52,13 @@ export default class Category extends Component {
 
     /**
      *异步获取一级/二级分类列表显示 
+     *parentId: 没有指定 根据state里的parentId，指定了根据指定的请求
      */
-    getCategorys = async () =>{
+    getCategorys = async (parentId) =>{
         //发请求前 显示loading
         this.setState({loading:true})
-        const {parentId} = this.state
+        // const {parentId} = this.state
+        parentId = parentId || this.state.parentId
         //发送异步ajax请求 获取数据
         const result = await reqCategorys(parentId)    //await promise对象
         //请求完成后，隐藏loading
@@ -113,6 +115,9 @@ export default class Category extends Component {
      * 响应点击取消：隐藏确认框
      */
     handleCancel = () => {
+        //清除输入
+        this.form.current.resetFields();
+        //隐藏
         this.setState({
             showStatus:0
         })
@@ -120,15 +125,61 @@ export default class Category extends Component {
     /**
      * 添加分类
      */
-    addCategory = () => {
+    addCategory =  () => {
         // console.log('addCategory()')
-        
+        // 表单验证
+        this.form.current.validateFields(async (err, values) => {
+            if(!err){
+                // 隐藏  确认框
+                this.setState({
+                    showStatus:0
+                })
+                //收集数据,并添加分类的请求
+                const {parentId, categoryName} = values//this.form.current.getFieldValue()
+                //清除输入
+                this.form.current.resetFields();
+                const result = await reqAddCategorys(categoryName, parentId)
+                const response = result.data
+                if(response.status == 0){
+                    // 添加的分类就是当前分类列表下的分类
+                    if(parentId === this.state.parentId){
+                    // 重新获取当前分类列表显示
+                        this.getCategorys()
+                    }else if(parentId === 0){ // 二级分类列表下添加一级分类，重新获取一级分类列表，但不需要显示一级列表
+                        this.getCategorys(0)
+                    }
+                    
+                }
+            }
+        })
     }
      /**
      * 更新分类
      */
-    updateCategory = () => {
+    updateCategory =  () => {
         // console.log('updateCategory()')
+        // 表单验证
+        this.form.current.validateFields(async (err, values) => {
+            if(!err){
+                 //1.隐藏
+                this.setState({
+                    showStatus:0
+                })
+                //准备输入
+                const categoryId = this.category.id
+                // const categoryName = this.form.current.getFieldValue("categoryName")
+                const {categoryName} = values
+                //清除输入
+                this.form.current.resetFields();
+                //2.发请求
+                const result = await reqUpdateCategorys({categoryId, categoryName})
+                const response = result.data
+                if(response.status == 0){
+                    //3.重新显示列表
+                    this.getCategorys()
+                }
+            }
+        })
     }
     /**
      * 显示add Modal
@@ -205,7 +256,11 @@ export default class Category extends Component {
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                     >
-                    <AddForm/>
+                    <AddForm 
+                        categorys={categorys} 
+                        parentId={parentId}  
+                        setForm={(form) => {this.form = form}} 
+                    />
                 </Modal>
 
                 <Modal
@@ -214,7 +269,10 @@ export default class Category extends Component {
                     onOk={this.updateCategory}
                     onCancel={this.handleCancel}
                     >
-                    <UpdateForm categoryName={category.name}/>
+                    <UpdateForm 
+                        categoryName={category.name} 
+                        setForm={(form) => {this.form = form}} 
+                    />
                 </Modal>
             </Card>
         )
